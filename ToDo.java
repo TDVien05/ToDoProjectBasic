@@ -98,7 +98,7 @@ public class ToDo implements Serializable{
         }
     }
     
-    public void add() {
+    public void add() throws FileNotFoundException, IOException {
         System.out.print("Enter title : ");
         String title = scanner.nextLine();
         System.out.print("Enter description : ");
@@ -114,18 +114,20 @@ public class ToDo implements Serializable{
         String note = scanner.nextLine();
         ToDo td = new ToDo(title, description, startDate, finishDate, checkStatus, note);
         this.data.add(td);
+        this.writeToFile();
     }
     
-    public void remove(String title) {
+    public void remove(String title) throws FileNotFoundException, IOException {
         for(ToDo td : data) {
             if(td.getTitle().equalsIgnoreCase(title)) {
                 this.data.remove(td);
                 break;
             }
         }
+        this.writeToFile();
     }
     
-    public void edit(String toDoNeedEdit) {
+    public void edit(String toDoNeedEdit) throws FileNotFoundException, IOException {
         for(ToDo td : this.data) {
             if(td.getTitle().equalsIgnoreCase(toDoNeedEdit)) {
                 System.out.print("Enter new title : ");
@@ -139,6 +141,7 @@ public class ToDo implements Serializable{
                 break;
             }
         } 
+        this.writeToFile();
     }
     
     public ToDo searchToDO(String search) {
@@ -179,8 +182,4 @@ public class ToDo implements Serializable{
             e.printStackTrace();
         }
     }
-    
-    
-    
-
 }

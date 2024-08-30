@@ -5,6 +5,7 @@ import java.io.IOException;
 import java.util.Scanner;
 
 public class ToDoAppProject {
+    public static ToDo data = new ToDo();
     public static Scanner scanner = new Scanner(System.in);
     public static void menu() {
         System.out.println("Welcome--------");
@@ -13,15 +14,14 @@ public class ToDoAppProject {
         System.out.println("3 : Remove an activity.");
         System.out.println("4 : Edit an activity.");
         System.out.println("5 : Search an activity.");
-        System.out.println("6 : Write data to file.");
-        System.out.println("7 : Load data from file.");
     }
     public static void main(String[] args) throws FileNotFoundException, IOException{
-        ToDo data = new ToDo();
+        data.loadFromFile();
         do {            
             menu();
             System.out.print("Enter your choice : ");
             int choice = scanner.nextInt();
+            scanner.nextLine();
             if(choice == 1) {
                 data.list();
             } else if(choice == 2) {
@@ -38,11 +38,7 @@ public class ToDoAppProject {
                 System.out.print("Enter title to search : ");
                 String search = scanner.nextLine();
                 System.out.println(data.searchToDO(search));
-            } else if(choice == 6) {
-                data.writeToFile();
-            } else if(choice == 7) {
-                data.loadFromFile();
-            }
+            } 
         } while (true);
     }
     
