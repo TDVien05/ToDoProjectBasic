@@ -1,9 +1,19 @@
 package todoappproject;
 
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
+import java.io.OutputStream;
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Scanner;
 
-public class ToDo {
+public class ToDo implements Serializable{
     private String title;
     private String description;
     private String startDate;
@@ -76,6 +86,17 @@ public class ToDo {
     public void setNote(String note) {
         this.note = note;
     }
+
+    @Override
+    public String toString() {
+        return "ToDo{" + "title=" + title + ", description=" + description + ", startDate=" + startDate + ", finishDate=" + finishDate + ", checkStatus=" + checkStatus + ", note=" + note +  "}" + "\n";
+    }
+
+    public void list() {
+        for(ToDo td : this.data) {
+            System.out.println(td.toString());
+        }
+    }
     
     public void add() {
         System.out.print("Enter title : ");
@@ -119,6 +140,47 @@ public class ToDo {
             }
         } 
     }
+    
+    public ToDo searchToDO(String search) {
+        for(ToDo td : this.data) {
+            if(td.getTitle().equalsIgnoreCase(search)) {
+                return td;
+            }
+        }
+        System.out.println("Can not find activity!");
+        ToDo td = new ToDo();
+        return td;
+    }
+    
+    public void writeToFile() throws FileNotFoundException, IOException {
+        File file = new File("C:\\Users\\DELL\\OneDrive\\Documents\\NetBeansProjects\\ToDoAppProject\\src\\todoappproject\\Data.txt");
+        OutputStream os = new FileOutputStream(file);
+        ObjectOutputStream oos = new ObjectOutputStream(os);
+        for(ToDo td : data) {
+            oos.writeObject(td);
+        }
+        oos.flush();
+        oos.close();
+    }
+    
+    public void loadFromFile() {
+        File file = new File("C:\\Users\\DELL\\OneDrive\\Documents\\NetBeansProjects\\ToDoAppProject\\src\\todoappproject\\Data.txt");
+        try {
+            InputStream is = new FileInputStream(file);
+            ObjectInputStream ois = new ObjectInputStream(is);
+            ToDo td = null;
+            while(true) {
+                td = (ToDo) ois.readObject();
+                if(td != null) {
+                    this.data.add(td);
+                }
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+    
+    
     
 
 }
